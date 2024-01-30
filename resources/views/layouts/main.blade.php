@@ -1,70 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>E-Container Content | {{ $title }}</title>
 
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <link rel="stylesheet" href="{{ asset('/assets/plugins/fontawesome-free/css/all.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('/assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('/assets/dist/css/adminlte.min.css') }}">
-  <link href="{{ asset('/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
   <link rel="stylesheet" href="{{ asset('fontawesome/css/fontawesome.min.css') }}">
   <link rel="stylesheet" href="{{ asset('fontawesome/css/all.min.css') }}">
   <link rel="stylesheet" href="{{ asset('fontawesome/css/brands.min.css') }}">
   <link rel="icon" type="image/x-icon" href="{{ asset('/img/yazaki.png') }}">
+  <title>
+    E-Container Content | {{ $title }}
+  </title>
+  <!--     Fonts and icons     -->
+  <link href="{{ asset('font/open-sans-master/open-sans.min.css') }}" rel="stylesheet" />
+  <!-- Nucleo Icons -->
+  <link href="{{ asset('argon/assets/css/nucleo-icons.css') }}" rel="stylesheet" />
+  <link href="{{ asset('argon/assets/css/nucleo-svg.css') }}" rel="stylesheet" />
+  <link href="{{ asset('argon/assets/css/nucleo-svg.css') }}" rel="stylesheet" />
+  <!-- CSS Files -->
+  <link id="pagestyle" href="{{ asset('argon/assets/css/argon-dashboard.css?v=2.0.4') }}" rel="stylesheet" />
 </head>
-<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 
-<div class="wrapper">
-
-  <div class="preloader flex-column justify-content-center align-items-center">
-    <svg class="animation__wobble" xmlns="http://www.w3.org/2000/svg" version="1.1" width="225px" height="225px" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
-      <g><path style="opacity:1" fill="#da1312" d="M 159.5,146.5 C 159.357,148.262 159.691,149.929 160.5,151.5C 160.043,152.298 159.376,152.631 158.5,152.5C 120.9,132.033 83.8997,110.533 47.5,88C 49.2194,86.9431 51.0528,86.1097 53,85.5C 95.0957,86.3304 137.262,86.8304 179.5,87C 176.333,90.1667 173.167,93.3333 170,96.5C 169.667,104.167 169.333,111.833 169,119.5C 165.667,125.5 162.333,131.5 159,137.5C 158.699,140.507 158.865,143.507 159.5,146.5 Z"/></g>
-      <g><path style="opacity:0.745" fill="#f18984" d="M 159.5,146.5 C 160.718,148.828 161.718,151.328 162.5,154C 160.86,154.348 159.527,153.848 158.5,152.5C 159.376,152.631 160.043,152.298 160.5,151.5C 159.691,149.929 159.357,148.262 159.5,146.5 Z"/></g>
-      </svg>
-  </div>
-
-  @include('partials.navbar')
+<body class="g-sidenav-show   bg-gray-100">
+  <div class="min-height-300 bg-gradient-primary position-absolute w-100"></div>
   @include('partials.sidebar')
-
-  <div class="content-wrapper">
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">{{ $title }}</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="/"  class="text-decoration-none">Home</a></li>
-              <li class="breadcrumb-item active">{{ $title }}</li>
-            </ol>
-          </div>
-        </div>
-      </div>
+  <main class="main-content position-relative border-radius-lg-9">
+    @include('partials.navbar')
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+      @yield('container')
     </div>
+  </main>
+  <!--   Core JS Files   -->
+  <script src="{{ asset('argon/assets/js/jquery.min.js') }}"></script>
+  <script src="{{ asset('argon/assets/js/core/popper.min.js') }}"></script>
+  <script src="{{ asset('argon/assets/js/core/bootstrap.min.js') }}"></script>
+  <script src="{{ asset('argon/assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
+  <script src="{{ asset('argon/assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
+  <script src="{{ asset('argon/assets/js/plugins/chartjs.min.js') }}"></script>
+  @stack('js')
+  <script>
+    var ctx1 = document.getElementById("chart-line").getContext("2d");
 
-    <section class="content mx-2">
-        @yield('container')
-    </section>
-  </div>
+    var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
 
-  <aside class="control-sidebar control-sidebar-dark"></aside>
+    gradientStroke1.addColorStop(1, 'rgba(94, 114, 228, 0.2)');
+    gradientStroke1.addColorStop(0.2, 'rgba(94, 114, 228, 0.0)');
+    gradientStroke1.addColorStop(0, 'rgba(94, 114, 228, 0)');
+    new Chart(ctx1, {
+      type: "line",
+      data: {
+        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        datasets: [{
+          label: "Mobile apps",
+          tension: 0.4,
+          borderWidth: 0,
+          pointRadius: 0,
+          borderColor: "#5e72e4",
+          backgroundColor: gradientStroke1,
+          borderWidth: 3,
+          fill: true,
+          data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+          maxBarThickness: 6
 
-  @section('partials.footer')
-</div>
-<script type="text/javascript" src="{{ asset('/bootstrap/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
-<script src="{{ asset('assets/dist/js/adminlte.js') }}"></script>
-
-<script src="{{ asset('assets/plugins/jquery-mousewheel/jquery.mousewheel.js') }}"></script>
-<script src="{{ asset('assets/plugins/raphael/raphael.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/jquery-mapael/jquery.mapael.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/jquery-mapael/maps/usa_states.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/chart.js/Chart.min.js') }}"></script>
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          }
+        },
+        interaction: {
+          intersect: false,
+          mode: 'index',
+        },
+        scales: {
+          y: {
+            grid: {
+              drawBorder: false,
+              display: true,
+              drawOnChartArea: true,
+              drawTicks: false,
+              borderDash: [5, 5]
+            },
+            ticks: {
+              display: true,
+              padding: 10,
+              color: '#fbfbfb',
+              font: {
+                size: 11,
+                family: "Open Sans",
+                style: 'normal',
+                lineHeight: 2
+              },
+            }
+          },
+          x: {
+            grid: {
+              drawBorder: false,
+              display: false,
+              drawOnChartArea: false,
+              drawTicks: false,
+              borderDash: [5, 5]
+            },
+            ticks: {
+              display: true,
+              color: '#ccc',
+              padding: 20,
+              font: {
+                size: 11,
+                family: "Open Sans",
+                style: 'normal',
+                lineHeight: 2
+              },
+            }
+          },
+        },
+      },
+    });
+  </script>
+  <script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = {
+        damping: '0.5'
+      }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+  </script>
+  <!-- Github buttons -->
+  {{-- <script async defer src="https://buttons.github.io/buttons.js"></script> --}}
+  <script src="{{ asset('argon/assets/js/argon-dashboard.min.js?v=2.0.4') }}"></script>
 </body>
+
 </html>

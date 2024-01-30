@@ -3,18 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Imports\Pt37Import;
+use App\Models\LoadingDock;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 use Maatwebsite\Excel\Facades\Excel;
 
 class Pt37Controller extends Controller
 {
-    public function index(){
-        return view('pt37.index',[
-            'title' => 'PT.37'
-        ]);
-    }
 
-    public function convert(Request $request){
+    public function store(Request $request){
         $request->validate([
             'docTitle' => 'required',
             'drNum' => 'required',
@@ -46,6 +43,8 @@ class Pt37Controller extends Controller
                 $newData[$i-1][3] = $temp[3];
                 $newData[$i-1][4] = $temp[1];
                 $newData[$i-1][5] = $temp[4];
+                $newData[$i-1][6] = false;
+                $newData[$i-1][7] = false;
             }
         }
 
@@ -87,7 +86,7 @@ class Pt37Controller extends Controller
             }
         }
 
-        $empty = [null, 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY'];
+        $empty = [null, 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', false, false];
         $countedIndex = 0;
         foreach($mustFilledWithEmpty as $i => $mfwe){
             $empty[0] = $mfwe;
@@ -112,12 +111,72 @@ class Pt37Controller extends Controller
         foreach($newData as $i => $nd){
             foreach($striped as $s){
                 if($nd[0] === $s){
-                    $newData[$i][6] = 'striped';
+                    $newData[$i][8] = 'striped';
                 }
             }
         }
 
-        return view('preview', [
+        $uniqueAssy = array();
+        foreach($newData as $n){
+            if(!in_array($n[1], $uniqueAssy)){
+                array_push($uniqueAssy, $n[1]);
+            }
+        }
+
+        $uniqueAssyList = [];
+        foreach($uniqueAssy as $i => $ua){
+            $uniqueAssyList[$i] = array();
+            foreach($newData as $j => $nd){
+                if($nd[1] === $ua){
+                    array_push($uniqueAssyList[$i], $nd);
+                }
+            }
+        }
+
+        for($i = 0; $i < count($uniqueAssyList); $i++){
+            $uniqueAssyList[$i] = $this->bubbleSort($uniqueAssyList[$i]);
+        }
+
+        $summary = [];
+        for($i = 0; $i < count($uniqueAssyList); $i++){
+            $summaryTemp = [];
+            array_push($summaryTemp, $this->groupConsecutive($uniqueAssyList[$i], 5));
+            foreach($summaryTemp[0] as $st){
+                array_push($summary, $st);
+            }
+        }
+
+        $totalQuantity = [];
+        foreach($summary as $summ){
+            $temp = 0;
+            foreach($summ as $s){
+                $temp += intval($s[4]);
+            }
+            array_push($totalQuantity, $temp);
+        }
+
+        $ld = new LoadingDock();
+        $ld->title = $docTitle;
+        $ld->dr_number = $drNum;
+        $ld->document_number = $docNum;
+        $ld->size = $size;
+        $ld->pt11 = $pt11;
+        $ld->app_jpr = $appjpr;
+        $ld->total_set = $totalSet;
+        $ld->total_poly = count($newData);
+        $ld->total_palet = count($uniquePallet);
+        $ld->document_link = 'tes';
+        $ld->date = Date::now();
+        $ld->type = 'pt37';
+        $ld->data = json_encode($newData);
+        $ld->approved_by_ppc = 0;
+        $ld->approved_by_admin = 0;
+        $ld->is_checked = 1;
+        $ld->save();
+
+        // return redirect('history');
+
+        return view('pdf_template.preview', [
             'data' => $newData,
             'totalPoly' => count($newData),
             'totalPlt' => count($uniquePallet),
@@ -127,8 +186,47 @@ class Pt37Controller extends Controller
             'size' => $size,
             'pt11' => $pt11,
             'appjpr' => $appjpr,
-            'totalSet' => $totalSet
+            'totalSet' => $totalSet,
+            'summary' => $summary,
+            'totalQuantity' => $totalQuantity
 
         ]);
+    }
+
+    function groupConsecutive($arr, $key) {
+        $groups = [];
+        $currentGroup = [];
+    
+        foreach ($arr as $element) {
+            if($element[1] === 'EMPTY'){
+                continue;
+            }
+            if (empty($currentGroup) || intval($currentGroup[count($currentGroup) - 1][$key]) + 1 == $element[$key]) {
+                $currentGroup[] = $element;
+            } else {
+                $groups[] = $currentGroup;
+                $currentGroup = [$element];
+            }
+        }
+    
+        if (!empty($currentGroup)) {
+            $groups[] = $currentGroup;
+        }
+    
+        return $groups;
+    }
+
+    function bubbleSort($arr) {
+        $n = count($arr);
+        for ($i = 0; $i < $n-1; $i++) {
+            for ($j = 0; $j < $n-$i-1; $j++) {
+                if ($arr[$j][5] > $arr[$j+1][5]) {
+                    $temp = $arr[$j];
+                    $arr[$j] = $arr[$j+1];
+                    $arr[$j+1] = $temp;
+                }
+            }
+        }
+        return $arr;
     }
 }

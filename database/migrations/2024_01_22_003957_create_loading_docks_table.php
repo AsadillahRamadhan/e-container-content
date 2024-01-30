@@ -26,9 +26,11 @@ return new class extends Migration
             $table->integer('total_poly');
             $table->integer('total_palet');
             $table->string('document_link');
+            $table->json('data')->nullable();
             $table->date('date');
-            $table->boolean('approved_by_ppc');
-            $table->boolean('approved_by_admin');
+            $table->boolean('is_checked')->nullable();
+            $table->boolean('approved_by_ppc')->nullable();
+            $table->boolean('approved_by_admin')->nullable();
             $table->timestamps();
         });
     }

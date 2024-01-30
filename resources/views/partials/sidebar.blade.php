@@ -1,76 +1,66 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
-
-    <a href="/" class="brand-link text-decoration-none text-center">
-      <img src="{{ asset('img/yazaki-text.png') }}" width="150" alt="">
+<aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main">
+  <div class="sidenav-header">
+    <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+    <a class="navbar-brand m-0 text-center" href="/" target="_blank">
+      <img src="{{ asset('img/yazaki-text.png') }}" width="125px" class="navbar-brand-img h-100" alt="main_logo">
     </a>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="info">
-          <span class="d-block text-bold text-center text-decoration-none">{{ Auth::user()->name }}</span>
-        </div>
-      </div>
-
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <li class="nav-item">
-            <a href="/" class="nav-link {{ $title === 'Dashboard' ? "active" : '' }}">
-              <i class="nav-icon fas fa-gauge"></i>
-              <p>
-                Dashboard
-              </p>
-            </a>
-          </li>
-          @if(Auth::user()->type === 'l/d')
-          <li class="nav-item">
-            <a href="/box" class="nav-link {{ $title === 'BOX' ? "active" : '' }}">
-              <i class="nav-icon fas fa-box"></i>
-              <p>
-                Box
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="/pt-56" class="nav-link {{ $title === 'PT.56' ? "active" : '' }}">
-              <i class="nav-icon fas fa-boxes-stacked"></i>
-              <p>
-                PT.56
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="/pt-37" class="nav-link {{ $title === 'PT.37' ? "active" : '' }}">
-              <i class="nav-icon fas fa-boxes-stacked"></i>
-              <p>
-                PT.37
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="/oricon" class="nav-link {{ $title === 'ORICON' ? "active" : '' }}">
-              <i class="nav-icon fas fa-boxes-stacked"></i>
-              <p>
-                ORICON
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="/history" class="nav-link {{ $title === 'History' ? "active" : '' }}">
-              <i class="nav-icon fas fa-clock-rotate-left"></i>
-              <p>
-                Histori
-              </p>
-            </a>
-          </li>
-          @endif
-          @if(Auth::user()->type === 'ppc')
-          @endif
-        </ul>
-      </nav>
-      <!-- /.sidebar-menu -->
-    </div>
-    <!-- /.sidebar -->
-  </aside>
+  </div>
+  <hr class="horizontal dark mt-0">
+  <div class="collapse navbar-collapse  w-auto" id="sidenav-collapse-main">
+    <ul class="navbar-nav">
+      
+      <li class="nav-item">
+        <a class="nav-link {{ $title === 'Dashboard' ? "active" : '' }}" href="/">
+          <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+          </div>
+          <span class="nav-link-text ms-1">Dashboard</span>
+        </a>
+      </li>
+      @if(Auth::user()->type === 'l/d')
+      <li class="nav-item">
+        <a class="nav-link {{ $title === 'List Data' ? "active" : '' }}" href="/history">
+          <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="fas fa-list text-warning text-sm opacity-10"></i>
+          </div>
+          <span class="nav-link-text ms-1">Data List</span>
+        </a>
+      </li>
+      @elseif(Auth::user()->type === 'ppc')
+      <li class="nav-item">
+        <a class="nav-link {{ $title === 'Request' ? "active" : '' }}" href="/request-ppc">
+          <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="fas fa-code-pull-request text-warning text-sm opacity-10"></i>
+          </div>
+          <span class="nav-link-text ms-1">Request</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {{ $title === 'History' ? "active" : '' }}" href="/history-ppc">
+          <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="fas fa-clock text-success text-sm opacity-10"></i>
+          </div>
+          <span class="nav-link-text ms-1">History</span>
+        </a>
+      </li>
+      @elseif(Auth::user()->type === 'admin')
+      <li class="nav-item">
+        <a class="nav-link {{ $title === 'Request' ? "active" : '' }}" href="/request-admin">
+          <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="fas fa-code-pull-request text-warning text-sm opacity-10"></i>
+          </div>
+          <span class="nav-link-text ms-1">Request</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {{ $title === 'History' ? "active" : '' }}" href="/history-admin">
+          <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="fas fa-clock text-success text-sm opacity-10"></i>
+          </div>
+          <span class="nav-link-text ms-1">History</span>
+        </a>
+      </li>
+      @endif
+    </ul>
+  </div>
+</aside>

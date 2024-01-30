@@ -22,24 +22,24 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        for($i = 0; $i < 1500; $i++){
-            $ld = new LoadingDock();
-        $ld->title = '1';
-        $ld->dr_number = '1';
-        $ld->document_number = '1';
-        $ld->size = '1';
-        $ld->pt11 = '1';
-        $ld->app_jpr = '1';
-        $ld->total_set = '1';
-        $ld->total_poly = '1';
-        $ld->total_palet = '1';
-        $ld->document_link = 'tes';
-        $ld->date = Date::now();
-        $ld->type = 'box';
-        $ld->approved_by_ppc = 0;
-        $ld->approved_by_admin = 0;
-        $ld->save();
-        }
+        // for($i = 0; $i < 1500; $i++){
+        //     $ld = new LoadingDock();
+        // $ld->title = '1';
+        // $ld->dr_number = '1';
+        // $ld->document_number = '1';
+        // $ld->size = '1';
+        // $ld->pt11 = '1';
+        // $ld->app_jpr = '1';
+        // $ld->total_set = '1';
+        // $ld->total_poly = '1';
+        // $ld->total_palet = '1';
+        // $ld->document_link = 'tes';
+        // $ld->date = Date::now();
+        // $ld->type = 'box';
+        // $ld->approved_by_ppc = 0;
+        // $ld->approved_by_admin = 0;
+        // $ld->save();
+        // }
 
         $this->call([
             UserSeeer::class

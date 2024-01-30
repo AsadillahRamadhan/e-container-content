@@ -1,66 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Log in (v2)</title>
-
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}">
-  <!-- icheck bootstrap -->
-  <link rel="stylesheet" href="{{ asset('assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="{{ asset('fontawesome/css/fontawesome.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('fontawesome/css/all.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('fontawesome/css/brands.min.css') }}">
+  <link rel="icon" type="image/x-icon" href="{{ asset('/img/yazaki.png') }}">
+  <title>
+    E-Container Content | Login
+  </title>
+  <!--     Fonts and icons     -->
+  <link href="{{ asset('font/open-sans-master/open-sans.min.css') }}" rel="stylesheet" />
+  <!-- Nucleo Icons -->
+  <link href="{{ asset('argon/assets/css/nucleo-icons.css') }}" rel="stylesheet" />
+  <link href="{{ asset('argon/assets/css/nucleo-svg.css') }}" rel="stylesheet" />
+  <link href="{{ asset('argon/assets/css/nucleo-svg.css') }}" rel="stylesheet" />
+  <!-- CSS Files -->
+  <link id="pagestyle" href="{{ asset('argon') }}/assets/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
 </head>
-<body class="hold-transition login-page dark-mode">
-<div class="login-box">
-  <!-- /.login-logo -->
-  <div class="card card-outline card-primary">
-    <div class="card-header text-center">
-      <img src="{{ asset('img/yazaki-text.png') }}" width="250" alt="">
-    </div>
-    <div class="card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
 
-      <form action="/login" method="post">
-        @csrf
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Username" name="username">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
-            </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password" name="password">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-        </div>
-          <!-- /.col -->
-          <div class="col-12">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-          </div>
-          <!-- /.col -->
-        </div>
-      </form>
+<body class="">
+  <div class="container position-sticky z-index-sticky top-0">
+    <div class="row">
+      <div class="col-12">
+      </div>
     </div>
-    <!-- /.card-body -->
   </div>
-  <!-- /.card -->
-</div>
-<!-- /.login-box -->
-
-<!-- jQuery -->
-<script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
-<!-- Bootstrap 4 -->
-<script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-<!-- AdminLTE App -->
-<script src="{{ asset('assets/dist/js/adminlte.min.js') }}"></script>
+  <main class="main-content  mt-0">
+    <section>
+      <form action="login" method="post">
+        @csrf
+      <div class="page-header min-vh-100">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
+              <div class="card card-plain">
+                <div class="card-header pb-0 text-start">
+                  <h4 class="font-weight-bolder">Sign In</h4>
+                  <p class="mb-0">Masukkan Username dan Password</p>
+                </div>
+                <div class="card-body">
+                  <form role="form">
+                    <div class="mb-3">
+                      <input type="text" class="form-control form-control-lg" name="username" placeholder="Username" aria-label="Username">
+                      @error('username')
+                      <small class="text-danger text-xs">Username tidak cocok</small>
+                      @enderror
+                    </div>
+                    <div class="mb-3">
+                      <input type="password" class="form-control form-control-lg" name="password" placeholder="Password" aria-label="Password">
+                      @error('password')
+                      <small class="text-danger text-xs">Password tidak cocok</small>
+                      @enderror
+                    </div>
+                    <div class="text-center">
+                      <button class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Sign in</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </form>
+            <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
+              <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden" style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-ill.jpg');
+          background-size: cover;">
+                <span class="mask bg-gradient-primary opacity-6"></span>
+                <h4 class="mt-5 text-white font-weight-bolder position-relative">"Attention is the new currency"</h4>
+                <p class="text-white position-relative">The more effortless the writing looks, the more effort the writer actually put into the process.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!--   Core JS Files   -->
+  <script src="{{ asset('argon/assets/js/core/popper.min.js') }}"></script>
+  <script src="{{ asset('argon/assets/js/core/bootstrap.min.js') }}"></script>
+  <script src="{{ asset('argon/assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
+  <script src="{{ asset('argon/assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
+  <script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = {
+        damping: '0.5'
+      }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+  </script>
+  <!-- Github buttons -->
+  {{-- <script async defer src="https://buttons.github.io/buttons.js"></script> --}}
+  <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="{{ asset('argon/assets/js/argon-dashboard.min.js?v=2.0.4') }}"></script>
 </body>
+
 </html>

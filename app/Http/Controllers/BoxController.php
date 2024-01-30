@@ -1,15 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use PDF;
 use App\Imports\BoxImport;
 use App\Models\LoadingDock;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+Use Alert;
+use Dompdf\Dompdf;
 
 class BoxController extends Controller
 {
@@ -20,7 +20,10 @@ class BoxController extends Controller
     }
 
     public function index(){
-        $boxes = LoadingDock::where('type', 'box')->orderByDesc('created_at')->paginate(15);
+        $boxes = LoadingDock::where('type', 'box')->where('is_checked', false)->orderByDesc('created_at')->paginate(15);
+        $title = 'Hapus Data!';
+        $text = "Apakah kamu yakin?";
+        confirmDelete($title, $text);
         return view('box.index', [
             'boxes' => $boxes,
             'title' => 'BOX'
@@ -58,6 +61,8 @@ class BoxController extends Controller
                 $newData[$i-1][3] = $temp[3];
                 $newData[$i-1][4] = $temp[1];
                 $newData[$i-1][5] = $temp[4];
+                $newData[$i-1][6] = false;
+                $newData[$i-1][7] = false;
             }
         }
 
@@ -83,11 +88,50 @@ class BoxController extends Controller
         foreach($newData as $i => $nd){
             foreach($striped as $s){
                 if($nd[0] === $s){
-                    $newData[$i][6] = 'striped';
+                    $newData[$i][8] = 'striped';
                 }
             }
         }
 
+        $uniqueAssy = array();
+        foreach($newData as $n){
+            if(!in_array($n[1], $uniqueAssy)){
+                array_push($uniqueAssy, $n[1]);
+            }
+        }
+
+        $uniqueAssyList = [];
+        foreach($uniqueAssy as $i => $ua){
+            $uniqueAssyList[$i] = array();
+            foreach($newData as $j => $nd){
+                if($nd[1] === $ua){
+                    array_push($uniqueAssyList[$i], $nd);
+                }
+            }
+        }
+
+        for($i = 0; $i < count($uniqueAssyList); $i++){
+            $uniqueAssyList[$i] = $this->bubbleSort($uniqueAssyList[$i]);
+        }
+
+        $summary = [];
+        for($i = 0; $i < count($uniqueAssyList); $i++){
+            $summaryTemp = [];
+            array_push($summaryTemp, $this->groupConsecutive($uniqueAssyList[$i], 5));
+            foreach($summaryTemp[0] as $st){
+                array_push($summary, $st);
+            }
+        }
+
+        $totalQuantity = [];
+        foreach($summary as $summ){
+            $temp = 0;
+            foreach($summ as $s){
+                $temp += intval($s[4]);
+            }
+            array_push($totalQuantity, $temp);
+        }
+        
         $ld = new LoadingDock();
         $ld->title = $docTitle;
         $ld->dr_number = $drNum;
@@ -101,14 +145,15 @@ class BoxController extends Controller
         $ld->document_link = 'tes';
         $ld->date = Date::now();
         $ld->type = 'box';
+        $ld->data = json_encode($newData);
         $ld->approved_by_ppc = 0;
         $ld->approved_by_admin = 0;
+        $ld->is_checked = 1;
         $ld->save();
 
-        $coll = collect($newData);
-        $tes = $coll->chunk(45);
+
         $final = [
-            'data' => $coll,
+            'data' => $newData,
             'totalPoly' => count($newData),
             'totalPlt' => count($uniquePallet),
             'docTitle' => $docTitle,
@@ -121,23 +166,51 @@ class BoxController extends Controller
 
         ];
 
-        return PDF::loadView('preview', $final)->setPaper('A4')->stream();
 
-        
-        $pdf = Pdf::loadView('previewtemp', $final);
-        return $pdf->download('invoice.pdf');
-        $content = $pdf->download()->getOriginalContent();
-        Storage::put('public/bills/bubla.pdf',$content);
-        
-        return redirect('box');
+
+        // return redirect('history');
+        return view('pdf_template.preview', [
+            'data' => $newData,
+            'totalPoly' => count($newData),
+            'totalPlt' => count($uniquePallet),
+            'docTitle' => $docTitle,
+            'drNum' => $drNum,
+            'docNum' => $docNum,
+            'size' => $size,
+            'pt11' => $pt11,
+            'appjpr' => $appjpr,
+            'totalSet' => $totalSet,
+            'summary' => $summary,
+            'totalQuantity' => $totalQuantity
+        ]);
 
        
+    }
+
+    function groupConsecutive($arr, $key) {
+        $groups = [];
+        $currentGroup = [];
+    
+        foreach ($arr as $element) {
+            if (empty($currentGroup) || intval($currentGroup[count($currentGroup) - 1][$key]) + 1 == $element[$key]) {
+                $currentGroup[] = $element;
+            } else {
+                $groups[] = $currentGroup;
+                $currentGroup = [$element];
+            }
+        }
+    
+        if (!empty($currentGroup)) {
+            $groups[] = $currentGroup;
+        }
+    
+        return $groups;
     }
 
     public function destroy($id){
         LoadingDock::find($id)->delete();
 
-        return redirect('/box');
+        return redirect('/history');
     }
 
 
@@ -147,5 +220,38 @@ class BoxController extends Controller
             'data' => $data,
             'title' => 'BOX'
         ]);
+    }
+
+    public function update(Request $request){
+        $request->validate([
+            'docTitle' => 'required',
+            'drNum' => 'required',
+            'docNum' => 'required',
+            'size' => 'required|integer',
+            'pt11' => 'required',
+            'appjpr' => 'required',
+            'rawFile' => 'required|mimes:xls,xlsx'
+        ]);
+
+        $docTitle = $request->post('docTitle');
+        $drNum  = $request->post('drNum');
+        $docNum = $request->post('docNum');
+        $size = $request->post('size');
+        $pt11 = $request->post('pt11');
+        $appjpr = $request->post('appjpr');
+    }
+
+    function bubbleSort($arr) {
+        $n = count($arr);
+        for ($i = 0; $i < $n-1; $i++) {
+            for ($j = 0; $j < $n-$i-1; $j++) {
+                if ($arr[$j][5] > $arr[$j+1][5]) {
+                    $temp = $arr[$j];
+                    $arr[$j] = $arr[$j+1];
+                    $arr[$j+1] = $temp;
+                }
+            }
+        }
+        return $arr;
     }
 }

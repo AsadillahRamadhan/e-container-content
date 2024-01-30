@@ -17,7 +17,7 @@ class AdministratorMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if(Auth::user()->type !== 'admin'){
-            return redirect('/404', 404);
+            return redirect('/404');
         }
         return $next($request);
     }

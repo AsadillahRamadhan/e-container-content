@@ -1,20 +1,21 @@
-<nav class="main-header navbar navbar-expand navbar-dark">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>
-        <li class="nav-item d-none d-sm-inline-block">
-          <a href="/" class="nav-link">Home</a>
-        </li>
-    </ul>
-    <ul class="navbar-nav ml-auto mr-4">
-      <li class="nav-item d-none d-sm-inline-block">
-        <form action="/logout" method="post">
-          @csrf
-          <button class="nav-link"><i class="fas fa-right-from-bracket"></i></button>
-        </form>
-        
-      </li>
-    </ul>
-  </nav>
+<nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
+      <div class="container-fluid py-1 px-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="/">Home</a></li>
+            <li class="breadcrumb-item text-sm text-white active" aria-current="page">{{ $title }}</li>
+          </ol>
+          <h6 class="font-weight-bolder text-white mb-0">{{ $title }}</h6>
+        </nav>
+        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+            <div class="input-group">
+                <form action="/logout" method="post" id="logout" class="text-white">
+                  @csrf
+                  <i onclick="document.querySelector('#logout').submit()" class="fas fa-right-from-bracket" style="cursor: pointer"></i>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
