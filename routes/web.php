@@ -40,6 +40,7 @@ Route::prefix('/')->middleware('isAuth')->group(function () {
         Route::get('/loadingdock/{id}/edit', [LoadingDockController::class, 'edit']);
         Route::put('/loadingdock/{id}', [LoadingDockController::class, 'update']);
         Route::delete('/loadingdock/{id}', [LoadingDockController::class, 'destroy']);
+        Route::get('/loadingdock/download/{id}', [LoadingDockController::class, 'download']);
     })->name('l/d');
 
     Route::middleware('ppc')->group(function(){

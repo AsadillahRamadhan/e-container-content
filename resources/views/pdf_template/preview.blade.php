@@ -3,6 +3,9 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('fontawesome/css/fontawesome.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('fontawesome/css/all.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('fontawesome/css/brands.min.css') }}">
 </head>
 <body>
     <div class="row">
@@ -30,11 +33,44 @@
                     <td>{{ $d[3] }}</td>
                     <td>{{ $d[4] }}</td>
                     <td>{{ $d[5] }}</td>
-                    <td></td>
+                    <td><i class="fas fa-check"></i></td>
                     <td></td>
                 </tr>
                 @endforeach
             </table>
+            <div>
+                <h1><small style="font-size: 14px;">Summary</small></h1>
+                <table style="width: 100%; font-size: 10px;" class="text-center me-3">
+                    <thead>
+                        <tr>
+                            <td>No</td>
+                            <td>No. Assy</td>
+                            <td colspan="2">Suffix Level</td>
+                            <td>Total Quantity</td>
+                            <td>Ctn Number Range</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($summary as $i => $summ)
+                        @foreach($summ as $j => $s)
+                        <tr>
+                            <td>{{ $i + 1 }}</td>
+                            <td>{{ $s[1] }}</td>
+                            <td>{{ $s[2] }}</td>
+                            <td>{{ $s[3] }}</td>
+                            <td>{{ $totalQuantity[$i] }}</td>
+                            @if(count($summ) == 1)
+                            <td>{{ $summ[0][5] }}</td>
+                            @else
+                            <td>{{ $summ[0][5] }} - {{  $summ[count($summ) - 1][5] }}</td>
+                            @endif
+                        </tr>
+                        @break
+                        @endforeach
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class="col-sm-3">
             <h6>Tanggal: {{ date('d-m-Y') }}</h6>
@@ -123,41 +159,15 @@
         </div>
         
     </div>
-    <div>
-        <h1><small style="font-size: 14px;">Summary</small></h1>
-        <table style="width: 100%; font-size: 10px;" class="text-center me-3">
-            <thead>
-                <tr>
-                    <td>No</td>
-                    <td>No. Assy</td>
-                    <td colspan="2">Suffix Level</td>
-                    <td>Total Quantity</td>
-                    <td>Ctn Number Range</td>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($summary as $i => $summ)
-                @foreach($summ as $j => $s)
-                <tr>
-                    <td>{{ $i + 1 }}</td>
-                    <td>{{ $s[1] }}</td>
-                    <td>{{ $s[2] }}</td>
-                    <td>{{ $s[3] }}</td>
-                    <td>{{ $totalQuantity[$i] }}</td>
-                    @if(count($summ) == 1)
-                    <td>{{ $summ[0][5] }}</td>
-                    @else
-                    <td>{{ $summ[0][5] }} - {{  $summ[count($summ) - 1][5] }}</td>
-                    @endif
-                </tr>
-                @break
-                @endforeach
-                @endforeach
-            </tbody>
-        </table>
-    </div>
 </body>
 <style>
+    table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: 0;
+    padding: 0;
+  }
+  
     table, th, td {
         border: 1px solid black;
     }
@@ -199,4 +209,9 @@
     page-break-after: always;
     }
 </style>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        window.print();
+    });
+</script>
 </html>

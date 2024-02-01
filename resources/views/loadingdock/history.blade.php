@@ -67,13 +67,14 @@
                     @endif
                     <td class="align-middle text-xs text-secondary mb-0">{{   \Carbon\Carbon::parse($h->date)->format('d M Y') }}</td>
                     <td class="d-flex items-center">
-                        <form action="/loadingdock/{{ $h->id }}">
+                        <form action="/loadingdock/{{ $h->id }}/delete" method="POST" id="delete{{ $h->id }}">
+                          @csrf
                             @method('delete')
                             @if($h->approved_by_admin == 1)
-                            <a href="" class="btn bg-gradient-info btn-xs"><i class="fa-solid fa-download"></i></a>
+                            <a href="loadingdock/download/{{ $h->id }}" class="btn bg-gradient-info btn-xs" target="_blank"><i class="fa-solid fa-download"></i></a>
                             @endif
                             <a href="/loadingdock/{{ $h->id }}/edit" class="btn bg-gradient-primary btn-xs"><i class="fa-solid fa-edit"></i></a>
-                            <button type="button" class="btn bg-gradient-danger btn-xs" data-confirm-delete="true"><i class="fa-solid fa-trash"></i></button>
+                            <button type="button" class="btn bg-gradient-danger btn-xs" data-confirm-delete="true" onclick="deleteForm('delete{{ $h->id }}')"><i class="fa-solid fa-trash"></i></button>
                         </form>
                     </td>
                 </tr>
@@ -99,5 +100,23 @@ small {
 const submit = () => {
     document.querySelector('#dateSearch').submit();
 }
+
+const deleteForm = (id) => {
+  console.log('tes');
+  Swal.fire({
+  title: "Are you sure?",
+  text: "You won't be able to revert this!",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+  confirmButtonText: "Yes, delete it!"
+}).then((result) => {
+  if (result.isConfirmed) {
+    document.getElementById(id).submit();
+  }
+});
+}
+
 </script>
 @endsection

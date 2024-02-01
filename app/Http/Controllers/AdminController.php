@@ -21,11 +21,14 @@ class AdminController extends Controller
         $request->validate([
             'conNum' => 'required'
         ]);
+
         $data = LoadingDock::find($id);
         $data->container_number = $request->post('conNum');
+        
         if($data->container_number != null){
             $data->approved_by_admin = 1;
         }
+        $data->save();
         // $data->save();
         // $html = View::make('pdf_template.preview', [
         //     'data' => $newData,

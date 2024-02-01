@@ -176,53 +176,7 @@ class OriconController extends Controller
         $ld->is_checked = 1;
         $ld->save();
 
-        $snappy = App::make('snappy.pdf');
-        $html = View::make('pdf_template_preview', [
-            'data' => $newData,
-            'totalPoly' => count($newData),
-            'totalPlt' => count($uniquePallet),
-            'docTitle' => $docTitle,
-            'drNum' => $drNum,
-            'docNum' => $docNum,
-            'size' => $size,
-            'pt11' => $pt11,
-            'appjpr' => $appjpr,
-            'totalSet' => $totalSet,
-            'summary' => $summary,
-            'totalQuantity' => $totalQuantity
-
-        ]);
-
-        $pdf = Pdf::loadView('pdf_template.preview', [
-            'data' => $newData,
-            'totalPoly' => count($newData),
-            'totalPlt' => count($uniquePallet),
-            'docTitle' => $docTitle,
-            'drNum' => $drNum,
-            'docNum' => $docNum,
-            'size' => $size,
-            'pt11' => $pt11,
-            'appjpr' => $appjpr,
-            'totalSet' => $totalSet,
-            'summary' => $summary,
-            'totalQuantity' => $totalQuantity
-        ]);
-
         return redirect('history');
-        return view('pdf_template.preview', [
-            'data' => $newData,
-            'totalPoly' => count($newData),
-            'totalPlt' => count($uniquePallet),
-            'docTitle' => $docTitle,
-            'drNum' => $drNum,
-            'docNum' => $docNum,
-            'size' => $size,
-            'pt11' => $pt11,
-            'appjpr' => $appjpr,
-            'totalSet' => $totalSet,
-            'summary' => $summary,
-            'totalQuantity' => $totalQuantity
-        ]);
     }
     
     function groupConsecutive($arr, $key) {

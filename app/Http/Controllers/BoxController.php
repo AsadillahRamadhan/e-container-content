@@ -152,38 +152,8 @@ class BoxController extends Controller
         $ld->save();
 
 
-        $final = [
-            'data' => $newData,
-            'totalPoly' => count($newData),
-            'totalPlt' => count($uniquePallet),
-            'docTitle' => $docTitle,
-            'drNum' => $drNum,
-            'docNum' => $docNum,
-            'size' => $size,
-            'pt11' => $pt11,
-            'appjpr' => $appjpr,
-            'totalSet' => $totalSet
 
-        ];
-
-
-
-        // return redirect('history');
-        return view('pdf_template.preview', [
-            'data' => $newData,
-            'totalPoly' => count($newData),
-            'totalPlt' => count($uniquePallet),
-            'docTitle' => $docTitle,
-            'drNum' => $drNum,
-            'docNum' => $docNum,
-            'size' => $size,
-            'pt11' => $pt11,
-            'appjpr' => $appjpr,
-            'totalSet' => $totalSet,
-            'summary' => $summary,
-            'totalQuantity' => $totalQuantity
-        ]);
-
+        return redirect('history');
        
     }
 

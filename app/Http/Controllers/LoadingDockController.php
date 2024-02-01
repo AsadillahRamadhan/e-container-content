@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\LoadingDockExport;
 use App\Models\LoadingDock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Maatwebsite\Excel\Excel as ExcelExcel;
+use Maatwebsite\Excel\Facades\Excel;
+use PDO;
 
 class LoadingDockController extends Controller
 {
@@ -98,5 +102,90 @@ class LoadingDockController extends Controller
         LoadingDock::find($id)->delete();
 
         return redirect('/history');
+    }
+
+    public function download($id){
+        $ecc = LoadingDock::find($id);
+        $data = json_decode($ecc->data);
+        $summary = [];
+
+        $uniqueAssy = array();
+        foreach($data as $n){
+            if(!in_array($n[1], $uniqueAssy)){
+                array_push($uniqueAssy, $n[1]);
+            }
+        }
+        $uniqueAssyList = [];
+        foreach($uniqueAssy as $i => $ua){
+            $uniqueAssyList[$i] = array();
+            foreach($data as $j => $nd){
+                if($nd[1] === $ua){
+                    array_push($uniqueAssyList[$i], $nd);
+                }
+            }
+        }
+
+        for($i = 0; $i < count($uniqueAssyList); $i++){
+            $summaryTemp = [];
+            array_push($summaryTemp, $this->groupConsecutive($uniqueAssyList[$i], 5));
+            foreach($summaryTemp[0] as $st){
+                array_push($summary, $st);
+            }
+        }
+
+        $totalQuantity = [];
+        foreach($summary as $summ){
+            $temp = 0;
+            foreach($summ as $s){
+                $temp += intval($s[4]);
+            }
+            array_push($totalQuantity, $temp);
+        }
+
+        $uniquePallet = array();
+        foreach($data as $n){
+            if(!in_array($n[0], $uniquePallet)){
+                array_push($uniquePallet, $n[0]);
+            }
+        }
+
+        return view('pdf_template.preview', [
+            'data' => $data,
+            'totalPoly' => count($data),
+            'totalPlt' => count($uniquePallet),
+            'docTitle' => $ecc->title,
+            'drNum' => $ecc->dr_number,
+            'docNum' => $ecc->document_number,
+            'size' => $ecc->size,
+            'pt11' => $ecc->pt11,
+            'appjpr' => $ecc->app_jpr,
+            'totalSet' => $ecc->total_set,
+            'summary' => $summary,
+            'totalQuantity' => $totalQuantity
+        ]);
+
+    }
+
+    function groupConsecutive($arr, $key) {
+        $groups = [];
+        $currentGroup = [];
+    
+        foreach ($arr as $element) {
+            if($element[1] === 'EMPTY'){
+                continue;
+            }
+            if (empty($currentGroup) || intval($currentGroup[count($currentGroup) - 1][$key]) + 1 == $element[$key]) {
+                $currentGroup[] = $element;
+            } else {
+                $groups[] = $currentGroup;
+                $currentGroup = [$element];
+            }
+        }
+    
+        if (!empty($currentGroup)) {
+            $groups[] = $currentGroup;
+        }
+    
+        return $groups;
     }
 }

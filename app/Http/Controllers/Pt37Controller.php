@@ -174,23 +174,7 @@ class Pt37Controller extends Controller
         $ld->is_checked = 1;
         $ld->save();
 
-        // return redirect('history');
-
-        return view('pdf_template.preview', [
-            'data' => $newData,
-            'totalPoly' => count($newData),
-            'totalPlt' => count($uniquePallet),
-            'docTitle' => $docTitle,
-            'drNum' => $drNum,
-            'docNum' => $docNum,
-            'size' => $size,
-            'pt11' => $pt11,
-            'appjpr' => $appjpr,
-            'totalSet' => $totalSet,
-            'summary' => $summary,
-            'totalQuantity' => $totalQuantity
-
-        ]);
+        return redirect('history');
     }
 
     function groupConsecutive($arr, $key) {
