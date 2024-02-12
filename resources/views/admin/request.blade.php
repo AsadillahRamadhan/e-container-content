@@ -1,8 +1,8 @@
 @extends('layouts.main')
 @section('container')
 <div class="card mb-4 p-3">
-    @foreach($requests as $h)
-        <form action="/update-container-number/{{ $h->id }}" method="post">
+    @foreach($requests as $a => $h)
+        <form action="/e-container-content/update-container-number/{{ $h->id }}" method="post">
             @csrf
             <input type="hidden" value="{{ $h->id }}" name="oldId">
         <div class="modal fade" id="check{{ $h->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -17,7 +17,7 @@
                         <label for="">No. Container</label>
                         <input type="text" name="conNum" class="form-control plc" value="{{ $h->container_number ? $h->container_number : '' }}" placeholder="Masukkan No. Container..">
                         @error('conNum')
-                        <small class="text-info">Masukkan No. Container</small>
+                        <small class="text-danger">Masukkan No. Container</small>
                         @enderror
                     </div>
                 </div>

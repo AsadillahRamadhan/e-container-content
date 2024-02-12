@@ -34,6 +34,12 @@ class UserSeeer extends Seeder
                 'username' => 'admin',
                 'password' => Hash::make('12345678'),
                 'type' => 'admin'
+            ],
+            [
+                'name' => 'Super Admin',
+                'username' => 'superadmin',
+                'password' => Hash::make('12345678'),
+                'type' => 'super_admin'
             ]
         ];
 

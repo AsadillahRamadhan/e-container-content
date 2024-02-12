@@ -5,12 +5,12 @@
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="/">Home</a></li>
             <li class="breadcrumb-item text-sm text-white active" aria-current="page">{{ $title }}</li>
           </ol>
-          <h6 class="font-weight-bolder text-white mb-0">{{ $title }}</h6>
+          <h6 class="font-weight-bolder text-white mb-0">Hi, {{ Auth::user()->name }}</h6>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
             <div class="input-group">
-                <form action="/logout" method="post" id="logout" class="text-white">
+                <form action="/e-container-content/logout" method="post" id="logout" class="text-white">
                   @csrf
                   <i onclick="document.querySelector('#logout').submit()" class="fas fa-right-from-bracket" style="cursor: pointer"></i>
                 </form>

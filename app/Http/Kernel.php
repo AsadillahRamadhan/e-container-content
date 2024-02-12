@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
         'l/d' => \App\Http\Middleware\LoadingDockMiddleware::class,
         'ppc' => \App\Http\Middleware\PPCMiddleware::class,
         'admin' => \App\Http\Middleware\AdministratorMiddleware::class,
+        'super_admin' => \App\Http\Middleware\SuperAdminMiddleware::class,
         'isAuth' => \App\Http\Middleware\IsAuthenticate::class
     ];
 }

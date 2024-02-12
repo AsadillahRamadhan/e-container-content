@@ -1,8 +1,8 @@
 @extends('layouts.main')
 @section('container')
 <div class="card mb-4 p-3">
-    @foreach($requests as $h)
-<form action="/update-checkbox-2/{{ $h->id }}" method="post">
+    @foreach($requests as $a => $h)
+<form action="/e-container-content/update-checkbox-2/{{ $h->id }}" method="post">
     @csrf
     <input type="hidden" value="{{ $h->id }}" name="oldId">
 <div class="modal fade modal-lg" id="check{{ $h->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -44,6 +44,37 @@
                 </tr>
                 @endforeach
             </table>
+            <div>
+              <h1><small style="font-size: 14px;">Summary</small></h1>
+              <table class="table align-items-center justify-content-center text-center mb-0">
+                      <tr>
+                          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">No</th>
+                          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">No. Assy</th>
+                          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" colspan="2">Suffix Level</th>
+                          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Total Quantity</th>
+                          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Ctn Number Range</th>
+                      </tr>
+                  <tbody>
+                      @foreach($summary[$a] as $i => $summ)
+                      @foreach($summ as $j => $s)
+                      <tr>
+                        <td class="align-middle text-xs font-weight-bold mb-0">{{ $i + 1 }}</td>
+                          <td class="align-middle text-xs text-secondary mb-0">{{ $s[1] }}</td>
+                          <td class="align-middle text-xs text-secondary mb-0">{{ $s[2] }}</td>
+                          <td class="align-middle text-xs text-secondary mb-0">{{ $s[3] }}</td>
+                          <td class="align-middle text-xs text-secondary mb-0">{{ $totalQuantity[$a][$i] }}</td>
+                          @if(count($summ) == 1)
+                          <td class="align-middle text-xs text-secondary mb-0">{{ $summ[0][5] }}</td>
+                          @else
+                          <td class="align-middle text-xs text-secondary mb-0">{{ $summ[0][5] }} - {{  $summ[count($summ) - 1][5] }}</td>
+                          @endif
+                      </tr>
+                      @break
+                      @endforeach
+                      @endforeach
+                  </tbody>
+              </table>
+          </div>
             @endif
         </div>
         <div class="modal-footer">

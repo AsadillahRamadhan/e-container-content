@@ -186,7 +186,7 @@ class Pt56Controller extends Controller
         $ld->is_checked = 1;
         $ld->save();
 
-        return redirect('history');
+        return redirect('/e-container-content/history');
     }
 
     function groupConsecutive($arr, $key) {

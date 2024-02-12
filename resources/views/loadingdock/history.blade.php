@@ -5,9 +5,9 @@
       <div class="card mb-4 px-2">
         <div class="card-header pb-0">
             <div class="d-flex justify-content-end">
-                <a href="loadingdock/create" class="btn bg-gradient-success">Tambah Data</a>
+                <a href="/e-container-content/loadingdock/create" class="btn bg-gradient-success">Tambah Data</a>
             </div>
-            <form action="/history" id="dateSearch">
+            <form action="/e-container-content/history" id="dateSearch">
                 <div class="form-group">
                     <label for="">Cari Berdasarkan Tanggal</label>
                     <input type="date" name="date" class="form-control" onchange="submit()" value="{{ isset($date) ? $date : ''}}">
@@ -67,13 +67,13 @@
                     @endif
                     <td class="align-middle text-xs text-secondary mb-0">{{   \Carbon\Carbon::parse($h->date)->format('d M Y') }}</td>
                     <td class="d-flex items-center">
-                        <form action="/loadingdock/{{ $h->id }}/delete" method="POST" id="delete{{ $h->id }}">
+                        <form action="/e-container-content/loadingdock/{{ $h->id }}" method="POST" id="delete{{ $h->id }}">
                           @csrf
                             @method('delete')
                             @if($h->approved_by_admin == 1)
-                            <a href="loadingdock/download/{{ $h->id }}" class="btn bg-gradient-info btn-xs" target="_blank"><i class="fa-solid fa-download"></i></a>
+                            <a href="/e-container-content/loadingdock/download/{{ $h->id }}" class="btn bg-gradient-info btn-xs" target="_blank"><i class="fa-solid fa-download"></i></a>
                             @endif
-                            <a href="/loadingdock/{{ $h->id }}/edit" class="btn bg-gradient-primary btn-xs"><i class="fa-solid fa-edit"></i></a>
+                            <a href="/e-container-content/loadingdock/{{ $h->id }}/edit" class="btn bg-gradient-primary btn-xs"><i class="fa-solid fa-edit"></i></a>
                             <button type="button" class="btn bg-gradient-danger btn-xs" data-confirm-delete="true" onclick="deleteForm('delete{{ $h->id }}')"><i class="fa-solid fa-trash"></i></button>
                         </form>
                     </td>

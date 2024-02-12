@@ -8,6 +8,8 @@ use App\Http\Controllers\OriconController;
 use App\Http\Controllers\PPCController;
 use App\Http\Controllers\Pt37Controller;
 use App\Http\Controllers\Pt56Controller;
+use App\Http\Controllers\SuperAdminController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,9 +23,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('/')->middleware('isAuth')->group(function () {
+Route::get('/', function(){
+    return redirect('/e-container-content/dashboard');
+});
 
-    Route::get('/', [DashboardController::class, 'index']);
+Route::prefix('/e-container-content')->group(function(){
+
+    Auth::routes();
+});
+
+Route::prefix('/e-container-content')->middleware('isAuth')->group(function () {
+
+    Route::get('/dashboard', [DashboardController::class, 'index']);
 
     Route::middleware('l/d')->group(function(){
 
@@ -48,7 +59,7 @@ Route::prefix('/')->middleware('isAuth')->group(function () {
         Route::post('/update-checkbox-2/{id}', [PPCController::class, 'update']);
         Route::get('/history-ppc', [PPCController::class, 'history']);
         
-    });
+    })->name('ppc');
 
     Route::middleware('admin')->group(function(){
         Route::get('/request-admin', [AdminController::class, 'request']);
@@ -60,7 +71,12 @@ Route::prefix('/')->middleware('isAuth')->group(function () {
     Route::get('/404', function(){
         return view('404');
     });
+
+    Route::middleware('super_admin')->group(function(){
+        Route::get('/dashboard-admin', [SuperAdminController::class, 'dashboard']);
+        Route::resource('/users', SuperAdminController::class);
+    })->name('super_admin');
     
 });
 
-Auth::routes();
+

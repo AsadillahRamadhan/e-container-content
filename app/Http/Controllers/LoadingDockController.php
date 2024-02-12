@@ -95,13 +95,13 @@ class LoadingDockController extends Controller
 
         $data->save();
 
-        return redirect('/history');
+        return redirect('/e-container-content/history');
     }
 
     public function destroy($id){
         LoadingDock::find($id)->delete();
 
-        return redirect('/history');
+        return redirect('/e-container-content/history');
     }
 
     public function download($id){

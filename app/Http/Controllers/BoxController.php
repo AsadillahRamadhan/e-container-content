@@ -153,7 +153,7 @@ class BoxController extends Controller
 
 
 
-        return redirect('history');
+        return redirect('/e-container-content/history');
        
     }
 
@@ -180,7 +180,7 @@ class BoxController extends Controller
     public function destroy($id){
         LoadingDock::find($id)->delete();
 
-        return redirect('/history');
+        return redirect('/e-container-content/history');
     }
 
 

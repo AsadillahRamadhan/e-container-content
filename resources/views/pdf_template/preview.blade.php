@@ -33,8 +33,8 @@
                     <td>{{ $d[3] }}</td>
                     <td>{{ $d[4] }}</td>
                     <td>{{ $d[5] }}</td>
-                    <td><i class="fas fa-check"></i></td>
                     <td></td>
+                    <td><i class="fas fa-check"></i></td>
                 </tr>
                 @endforeach
             </table>

@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('container')
 <div class="card mb-4 p-3">
-<form action="/loadingdock/{{ $data->id }}" method="POST" class="mt-3 text-white" enctype="multipart/form-data">
+<form action="/e-container-content/loadingdock/{{ $data->id }}" method="POST" class="mt-3 text-white" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     <div class="form-group">
@@ -63,7 +63,7 @@
     @enderror
     </div>
     <div class="d-flex mt-3">
-        <a href="/history" class="btn btn-danger me-2">Kembali</a>
+        <a href="/e-container-content/history" class="btn btn-danger me-2">Kembali</a>
         <button class="btn btn-primary">Kirim</button>
     </div>
 </form>

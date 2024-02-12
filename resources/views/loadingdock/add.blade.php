@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('container')
 <div class="card mb-4 p-3">
-<form action="/pt-56" id="typeForm" method="POST" class="mt-3 text-white" enctype="multipart/form-data">
+<form action="/e-container-content/pt-56" id="typeForm" method="POST" class="mt-3 text-white" enctype="multipart/form-data">
     @csrf
     <div class="form-group">
         <label for="type">Tipe</label>
@@ -69,7 +69,7 @@
     @enderror
     </div>
     <div class="d-flex mt-3">
-        <a href="/history" class="btn btn-danger me-2">Kembali</a>
+        <a href="/e-container-content/history" class="btn btn-danger me-2">Kembali</a>
         <button class="btn btn-primary">Kirim</button>
     </div>
 </form>
@@ -87,10 +87,10 @@
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        document.querySelector('#typeForm').action = `/${document.querySelector('#type').value}`;
+        document.querySelector('#typeForm').action = `/e-container-content/${document.querySelector('#type').value}`;
     });
     const actionChange = () => {
-        document.querySelector('#typeForm').action = `/${document.querySelector('#type').value}`;
+        document.querySelector('#typeForm').action = `/e-container-content/${document.querySelector('#type').value}`;
 
     }
 </script>

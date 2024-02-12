@@ -2,7 +2,7 @@
 @section('container')
 @foreach($history as $h)
 @if($h->approved_by_ppc == 1)
-<form action="/update-checkbox-1/{{ $h->id }}" method="post">
+<form action="/e-container-content/update-checkbox-2/{{ $h->id }}" method="post">
     @csrf
 <div class="modal fade" id="check{{ $h->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -34,7 +34,7 @@
     <div class="col-12">
       <div class="card mb-4 px-2">
         <div class="card-header pb-0">
-            <form action="/history-ppc" id="dateSearch">
+            <form action="/e-container-content/history-ppc" id="dateSearch">
                 <div class="form-group">
                     <label for="">Cari Berdasarkan Tanggal</label>
                     <input type="date" name="date" class="form-control" onchange="submit()" value="{{ isset($date) ? $date : ''}}">

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class IsAuthenticate
+class SuperAdminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,8 +16,8 @@ class IsAuthenticate
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(!Auth::user()){
-            return redirect('/e-container-content/login');
+        if(Auth::user()->type !== 'super_admin'){
+            return redirect('/404');
         }
         return $next($request);
     }
