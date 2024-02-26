@@ -23,10 +23,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function(){
-    return redirect('/e-container-content/dashboard');
-});
-
 Route::prefix('/e-container-content')->group(function(){
 
     Auth::routes();

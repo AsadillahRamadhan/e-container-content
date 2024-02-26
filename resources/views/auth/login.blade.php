@@ -44,7 +44,7 @@
                 <div class="card-body">
                   <form role="form">
                     <div class="mb-3">
-                      <input type="text" class="form-control form-control-lg" name="username" placeholder="Username" aria-label="Username">
+                      <input type="text" class="form-control form-control-lg" autocomplete="off" name="username" placeholder="Username" aria-label="Username">
                       @error('username')
                       <small class="text-danger text-xs">Username tidak cocok</small>
                       @enderror

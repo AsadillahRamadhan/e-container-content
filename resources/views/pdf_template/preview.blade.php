@@ -75,10 +75,10 @@
         <div class="col-sm-3">
             <h6>Tanggal: {{ date('d-m-Y') }}</h6>
             <h5 class="text-center mt-3"><b>{{ $docTitle }}</b></h5>
-            <h6 class="mt-2">Invoice No : </h6>
+            <h6 class="mt-2">Invoice No : {{ $document_number }}</h6>
             <h6 class="mt-2">No. DR : <b>{{ $drNum }}</b></h6>
             <h6 class="mt-2">No. DOC :  <b>{{ $docNum }}</b></h6>
-            <h6 class="mt-2">No. Container: </h6>
+            <h6 class="mt-2">No. Container: {{ $container_number }}</h6>
             <table class="text-center mt-3" style="width: 100%">
                 <tr>
                     <td><i style="font-weight: {{ $size == 20 ? '800' : '500' }}">20 FEET</i></td>
@@ -213,5 +213,12 @@
     document.addEventListener("DOMContentLoaded", () => {
         window.print();
     });
+
+    window.onafterprint = () => {
+        window.close();
+    }
+
+
+    
 </script>
 </html>

@@ -161,7 +161,9 @@ class LoadingDockController extends Controller
             'appjpr' => $ecc->app_jpr,
             'totalSet' => $ecc->total_set,
             'summary' => $summary,
-            'totalQuantity' => $totalQuantity
+            'totalQuantity' => $totalQuantity,
+            'container_number' => $ecc->container_number,
+            'document_number' => $ecc->document_number
         ]);
 
     }
